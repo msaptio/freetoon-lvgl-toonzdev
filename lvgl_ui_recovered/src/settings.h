@@ -24,7 +24,7 @@ typedef struct {
     int show_dim_bars;        /* 0/1 — usage bars (energy now / gas hourly) flanking the dim clock */
     int show_dim_metrics;     /* 0/1 — TVOC/eCO2/CH-pressure row on the dim screen */
     int dim_custom_enabled;   /* 0 = original dim layout (default); 1 = custom grid (dim editor) */
-    int language;             /* 0=NL, 1=EN */
+    int language;             /* 0=NL, 1=EN, 2=FR (lang_t) */
     int dim_bars_swap;        /* 0..3: bar placement on dim screen:
                                  0 = Gas left, Electricity right (act + day) [default]
                                  1 = Electricity left (act + day), Gas right
