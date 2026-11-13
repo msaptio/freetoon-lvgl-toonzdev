@@ -185,7 +185,7 @@ static void en_make_bar(lv_obj_t * parent, int w, int y, uint32_t color,
 
     *lbl = lv_label_create(parent);
     ui_obj_set_style_text_color(*lbl, lv_color_hex(color), 0);
-    ui_obj_set_style_text_font(*lbl, &lv_font_montserrat_18, 0);
+    ui_obj_set_style_text_font(*lbl, &lv_font_ft_18, 0);
     ui_label_set_text(*lbl, "");
     ui_obj_align(*lbl, LV_ALIGN_TOP_LEFT, 4, y + 13);
 }
@@ -256,8 +256,8 @@ static void en_make_vbar(lv_obj_t * parent, int bw, int bh,
 
     *lbl = lv_label_create(parent);
     ui_obj_set_style_text_color(*lbl, lv_color_hex(0xffffff), 0);
-    const lv_font_t * vfont = is_1col ? ((DISP_VER < 600) ? &lv_font_montserrat_14 : &lv_font_montserrat_18)
-                                      : ((DISP_VER < 600) ? &lv_font_montserrat_18 : &lv_font_montserrat_22);
+    const lv_font_t * vfont = is_1col ? ((DISP_VER < 600) ? &lv_font_ft_14 : &lv_font_ft_18)
+                                      : ((DISP_VER < 600) ? &lv_font_ft_18 : &lv_font_ft_22);
     ui_obj_set_style_text_font(*lbl, vfont, 0);
     lv_obj_set_style_text_align(*lbl, LV_TEXT_ALIGN_CENTER, 0);
     lv_obj_set_width(*lbl, bw > 0 ? bw : LV_SIZE_CONTENT);
@@ -268,7 +268,7 @@ static void en_make_vbar(lv_obj_t * parent, int bw, int bh,
         if (is_1col) {
             *unit_lbl = lv_label_create(parent);
             ui_obj_set_style_text_color(*unit_lbl, lv_color_hex(0xbbbbbb), 0);
-            const lv_font_t * ufont = (DISP_VER < 600) ? &lv_font_montserrat_12 : &lv_font_montserrat_14;
+            const lv_font_t * ufont = (DISP_VER < 600) ? &lv_font_ft_12 : &lv_font_ft_14;
             ui_obj_set_style_text_font(*unit_lbl, ufont, 0);
             lv_obj_set_style_text_align(*unit_lbl, LV_TEXT_ALIGN_CENTER, 0);
             lv_obj_set_width(*unit_lbl, bw > 0 ? bw : LV_SIZE_CONTENT);
@@ -318,16 +318,16 @@ static int s_date_box_w = 0, s_date_box_h = 0;
 
 static const lv_font_t * pick_date_font(const char * txt, lv_coord_t max_w, lv_coord_t max_h) {
     static const lv_font_t * const fonts[] = {
-        &lv_font_montserrat_48,
-        &lv_font_montserrat_36,
-        &lv_font_montserrat_28,
-        &lv_font_montserrat_24,
-        &lv_font_montserrat_22,
-        &lv_font_montserrat_20,
-        &lv_font_montserrat_18,
-        &lv_font_montserrat_14,
+        &lv_font_ft_48,
+        &lv_font_ft_36,
+        &lv_font_ft_28,
+        &lv_font_ft_24,
+        &lv_font_ft_22,
+        &lv_font_ft_20,
+        &lv_font_ft_18,
+        &lv_font_ft_14,
     };
-    if (!txt || !txt[0]) return &lv_font_montserrat_22;
+    if (!txt || !txt[0]) return &lv_font_ft_22;
     for (size_t i = 0; i < sizeof(fonts)/sizeof(fonts[0]); i++) {
         const lv_font_t * f = fonts[i];
         if (!f) continue;
@@ -337,7 +337,7 @@ static const lv_font_t * pick_date_font(const char * txt, lv_coord_t max_w, lv_c
             return f;
         }
     }
-    return &lv_font_montserrat_14;
+    return &lv_font_ft_14;
 }
 
 static void format_agenda_date_time(const calendar_event_t * ev, char * out, size_t outsz) {
@@ -1034,7 +1034,7 @@ lv_obj_t * screen_dim_grid_create(void) {
 
     lbl_waste = lv_label_create(bx_s);
     ui_obj_set_style_text_color(lbl_waste, lv_color_hex(0xbbbbbb), 0);
-    ui_obj_set_style_text_font(lbl_waste, (DISP_VER < 600) ? &lv_font_montserrat_14 : &lv_font_montserrat_18, 0);
+    ui_obj_set_style_text_font(lbl_waste, (DISP_VER < 600) ? &lv_font_ft_14 : &lv_font_ft_18, 0);
     lv_obj_set_width(lbl_waste, sbw - 8);
     lv_obj_set_style_text_align(lbl_waste, LV_TEXT_ALIGN_CENTER, 0);
     lv_label_set_long_mode(lbl_waste, LV_LABEL_LONG_WRAP);
@@ -1095,7 +1095,7 @@ lv_obj_t * screen_dim_grid_create(void) {
 
     dim_lbl_water = lv_label_create(bx_t);
     ui_obj_set_style_text_color(dim_lbl_water, lv_color_hex(0x66bbff), 0);
-    ui_obj_set_style_text_font(dim_lbl_water, &lv_font_montserrat_22, 0);
+    ui_obj_set_style_text_font(dim_lbl_water, &lv_font_ft_22, 0);
     ui_label_set_text(dim_lbl_water, "");
     ui_obj_align(dim_lbl_water, LV_ALIGN_TOP_MID, -110, 18);
     ui_obj_add_flag(dim_lbl_water, LV_OBJ_FLAG_HIDDEN);
@@ -1113,7 +1113,7 @@ lv_obj_t * screen_dim_grid_create(void) {
 
     dim_vent_lbl = lv_label_create(bx_v);
     ui_obj_set_style_text_color(dim_vent_lbl, lv_color_hex(0xbbbbbb), 0);
-    ui_obj_set_style_text_font(dim_vent_lbl, &lv_font_montserrat_18, 0);
+    ui_obj_set_style_text_font(dim_vent_lbl, &lv_font_ft_18, 0);
     ui_label_set_text(dim_vent_lbl, "-- %");
     lv_obj_set_style_text_align(dim_vent_lbl, LV_TEXT_ALIGN_CENTER, 0);
     lv_obj_set_width(dim_vent_lbl, vbw - 4);
@@ -1127,7 +1127,7 @@ lv_obj_t * screen_dim_grid_create(void) {
     int fbw = 0, fbh = 0; lv_obj_t * bx_f = dim_box(DB_FAMILY, &fbw, &fbh); (void)fbh;
     dim_lbl_life360_a = lv_label_create(bx_f);
     ui_obj_set_style_text_color(dim_lbl_life360_a, lv_color_hex(0x88aaff), 0);
-    ui_obj_set_style_text_font(dim_lbl_life360_a, &lv_font_montserrat_18, 0);
+    ui_obj_set_style_text_font(dim_lbl_life360_a, &lv_font_ft_18, 0);
     lv_obj_set_width(dim_lbl_life360_a, fbw - 8);
     lv_obj_set_style_text_align(dim_lbl_life360_a, LV_TEXT_ALIGN_RIGHT, 0);
     lv_label_set_long_mode(dim_lbl_life360_a, LV_LABEL_LONG_DOT);
@@ -1137,7 +1137,7 @@ lv_obj_t * screen_dim_grid_create(void) {
 
     dim_lbl_life360_b = lv_label_create(bx_f);
     ui_obj_set_style_text_color(dim_lbl_life360_b, lv_color_hex(0xff88cc), 0);
-    ui_obj_set_style_text_font(dim_lbl_life360_b, &lv_font_montserrat_18, 0);
+    ui_obj_set_style_text_font(dim_lbl_life360_b, &lv_font_ft_18, 0);
     lv_obj_set_width(dim_lbl_life360_b, fbw - 8);
     lv_obj_set_style_text_align(dim_lbl_life360_b, LV_TEXT_ALIGN_RIGHT, 0);
     lv_label_set_long_mode(dim_lbl_life360_b, LV_LABEL_LONG_DOT);
