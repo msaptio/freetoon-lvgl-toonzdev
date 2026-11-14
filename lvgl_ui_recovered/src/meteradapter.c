@@ -192,6 +192,37 @@ void probe_happ_pwrusage(void) {
     }
 }
 
+/* Native solar production: happ_pwrusage GetCurrentUsage "powerProduction".
+ * Polled independently of the flow notifies (which carry no production). */
+void meteradapter_poll_solar(void) {
+    char buf[512] = {0};
+    if (http_fetch_to("http://127.0.0.1:10080/happ_pwrusage?action=GetCurrentUsage", buf, sizeof(buf), 2) != 0)
+        return;
+    const char * p_pp = strstr(buf, "\"powerProduction\"");
+    if (!p_pp) return;
+    const char * p_val = strstr(p_pp, "\"value\"");
+    float v = 0.0f;
+    int ok = 0;
+    if (p_val) {
+        p_val += 7;
+        while (*p_val == ' ' || *p_val == ':' || *p_val == '\t') p_val++;
+        if (*p_val != 'n' && *p_val != 'N' && sscanf(p_val, "%f", &v) == 1) ok = 1;
+    }
+    if (!ok) {
+        /* between pulses 'value' can be null: fall back to the average */
+        const char * p_avg = strstr(p_pp, "\"avgValue\"");
+        if (p_avg) {
+            p_avg += 10;
+            while (*p_avg == ' ' || *p_avg == ':' || *p_avg == '\t') p_avg++;
+            if (*p_avg != 'n' && *p_avg != 'N' && sscanf(p_avg, "%f", &v) == 1) ok = 1;
+        }
+    }
+    if (!ok) return;
+    if (v < 0.0f) v = 0.0f;
+    meter_state.solar_w = v;
+    meter_state.solar_last_s = (long)time(NULL);
+}
+
 static int parse_rrd_delta(const char * body, float * out_delta, float * out_latest) {
     if (!body || !out_delta) return 0;
     const char * p = strchr(body, '{');
@@ -237,6 +268,8 @@ static void *watchdog_thread(void *arg) {
          * If BoxTalk flow notifies haven't arrived in the last 4 seconds,
          * poll happ_pwrusage (enables analog pulse meters and acts as failsafe). */
         if (!settings.client_mode && settings.energy_source == 0) {
+            meteradapter_poll_solar();
+            now = time(NULL);
             if (meter_state.last_flow_s == 0 || (now - meter_state.last_flow_s) >= 4) {
                 probe_happ_pwrusage();
                 now = time(NULL);

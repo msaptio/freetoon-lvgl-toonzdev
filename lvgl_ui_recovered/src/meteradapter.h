@@ -16,6 +16,10 @@ typedef struct {
     volatile float gas_today_m3; /* today's gas usage in m³, <0 = unavailable */
     volatile float gas_now_m3h;  /* current gas flow rate in m³/h (from gasUsage) */
     volatile float gas_m3;       /* cumulative total gas in m³ */
+    /* Native solar: happ_pwrusage GetCurrentUsage "powerProduction" (W), the same
+     * figure the stock Toon UI shows. solar_last_s = time() of last good poll, 0 = never. */
+    volatile float solar_w;
+    volatile long  solar_last_s;
     /* The meter's own registers, as the stock "Meterstanden" pop-up shows
      * them: happ_pwrusage's powerUsage / gasUsage datasets (meterReading,
      * meterReadingLow, ...Produ in Wh; gas meterReading in litres). <0 =
@@ -39,5 +43,7 @@ int  meteradapter_start(void);
 void meteradapter_on_flow(float watts);
 /* Query happ_pwrusage via local HTTP daemon (fallback / analog pulse meters) */
 void probe_happ_pwrusage(void);
+/* Poll powerProduction only (native solar). Cheap local HTTP, called every ~5 s. */
+void meteradapter_poll_solar(void);
 
 #endif

@@ -186,12 +186,20 @@ const char * energy_offline_label(void) {
 }
 
 /* Solar: a HomeWizard kWh meter on the inverter wins when its IP is set;
- * otherwise the HA production sensor. */
+ * then the HA production sensor; otherwise the Toon's own production
+ * (happ_pwrusage powerProduction, what the stock UI shows). */
+#define SOLAR_NATIVE_STALE_S 30
+static int solar_native_fresh(void) {
+    return meter_state.solar_last_s &&
+           (time(NULL) - meter_state.solar_last_s) <= SOLAR_NATIVE_STALE_S;
+}
 int   energy_have_solar(void) {
     if (settings.hw_kwh_host[0]) return hw_state.connected_kwh;
-    return settings.enable_ha && ha_state.have_solar;
+    if (settings.enable_ha && ha_state.have_solar) return 1;
+    return solar_native_fresh();
 }
 float energy_solar_w(void) {
     if (settings.hw_kwh_host[0]) return hw_state.kwh_power_w;
-    return ha_state.solar_w;
+    if (settings.enable_ha && ha_state.have_solar) return ha_state.solar_w;
+    return solar_native_fresh() ? meter_state.solar_w : 0.0f;
 }
