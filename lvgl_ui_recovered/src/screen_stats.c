@@ -112,6 +112,22 @@ static const char * metric_title(int i) {
     }
 }
 
+/* Solar loggers differ per Toon firmware: Eneco/Quby Toons log production as
+ * elec_solar_flow / elec_solar_quantity, others as solar_flow / solar_quantity.
+ * Try the Eneco names first, then the legacy ones. */
+static int stats_fetch_solar(int flow, const char * rra, time_t from, time_t to,
+                             int samples, stats_series_t * out) {
+    static const char * const flow_names[] = { "elec_solar_flow", "solar_flow" };
+    static const char * const qty_names[]  = { "elec_solar_quantity", "solar_quantity" };
+    const char * const * names = flow ? flow_names : qty_names;
+    int rc = -1;
+    for (int i = 0; i < 2; i++) {
+        rc = stats_fetch_range(names[i], rra, from, to, samples, out);
+        if (rc == 0 && out->n > 0) return rc;
+    }
+    return rc;
+}
+
 static int      selected_metric = 0;
 static period_t selected_period = PERIOD_NOW;
 static stats_series_t  series;
@@ -769,7 +785,7 @@ static int load_for_period(void) {
             /* Live 5-minute flow: 12 samples over 1 hour */
             int rc = stats_fetch_range(m->flow_logger, "5min", from, to, 12, &series);
             if ((rc != 0 || series.n == 0) && is_solar) {
-                rc = stats_fetch_range("solar_flow", "5min", from, to, 12, &series);
+                rc = stats_fetch_solar(1, "5min", from, to, 12, &series);
             }
             int valid_cnt = 0;
             for (int i = 0; i < series.n; i++) {
@@ -798,7 +814,7 @@ static int load_for_period(void) {
                 int rc = stats_fetch_range(m->cum_logger, cum_rra_hours(), from - 3600, to, 26, &series);
                 if ((rc != 0 || series.n == 0) && is_solar) {
                     series2.n = 0;
-                    rc = stats_fetch_range("solar_quantity", "5yrhours", from - 3600, to, 26, &series);
+                    rc = stats_fetch_solar(0, "5yrhours", from - 3600, to, 26, &series);
                 }
                 return rc;
             }
@@ -816,7 +832,7 @@ static int load_for_period(void) {
                        : stats_fetch_range(m->cum_logger, "10yrdays", from - DAY, to, 34, &series);
                 if ((rc != 0 || series.n == 0) && is_solar) {
                     series2.n = 0;
-                    rc = stats_fetch_range("solar_quantity", "10yrdays", from - DAY, to, 34, &series);
+                    rc = stats_fetch_solar(0, "10yrdays", from - DAY, to, 34, &series);
                 }
                 return rc;
             }
@@ -835,7 +851,7 @@ static int load_for_period(void) {
                        : stats_fetch_range(m->cum_logger, "10yrdays", from - DAY, to, 88, &series);
                 if ((rc != 0 || series.n == 0) && is_solar) {
                     series2.n = 0;
-                    rc = stats_fetch_range("solar_quantity", "10yrdays", from - DAY, to, 88, &series);
+                    rc = stats_fetch_solar(0, "10yrdays", from - DAY, to, 88, &series);
                 }
                 return rc;
             }
@@ -854,7 +870,7 @@ static int load_for_period(void) {
                        : stats_fetch_range(m->cum_logger, "10yrdays", from - DAY, to, 370, &series);
                 if ((rc != 0 || series.n == 0) && is_solar) {
                     series2.n = 0;
-                    rc = stats_fetch_range("solar_quantity", "10yrdays", from - DAY, to, 370, &series);
+                    rc = stats_fetch_solar(0, "10yrdays", from - DAY, to, 370, &series);
                 }
                 return rc;
             }
@@ -870,7 +886,7 @@ static int load_for_period(void) {
                 int rc = stats_fetch_range(m->cum_logger, metric_is_water() ? "10yrhours" : "10yrdays", 0, 0, 120, &series);
                 if ((rc != 0 || series.n == 0) && is_solar) {
                     series2.n = 0;
-                    rc = stats_fetch_range("solar_quantity", "10yrdays", 0, 0, 120, &series);
+                    rc = stats_fetch_solar(0, "10yrdays", 0, 0, 120, &series);
                 }
                 return rc;
             }
