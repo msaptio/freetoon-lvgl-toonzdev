@@ -1,3 +1,32 @@
+# freetoon-lvgl - custom edition (Belgium / Engie "boxx")
+
+> **Cette branche `custom` est une adaptation de [ToonzDev/freetoon-lvgl](https://github.com/ToonzDev/freetoon-lvgl)
+> pour le marché belge : les anciens "boxx" d'Engie (Toon) avec prise en charge des
+> capteurs solaires, une interface en français et des adaptations personnelles.**
+> Elle suit le projet du mainteneur : `main` est un miroir exact de ToonzDev/main, `custom`
+> porte les ajouts ci-dessous (un commit par adaptation, rebasés à chaque nouvelle version),
+> `builds` contient les binaires compilés pour Toon 2 avec leur sha256.
+
+This branch is an adaptation of ToonzDev/freetoon-lvgl for the Belgian market (the former
+Engie "boxx" Toon units), with solar sensor support and a French UI. All credit for the
+underlying project goes to its authors; the original README follows unchanged.
+
+**What this edition adds** (list kept up to date as changes are made):
+
+- **French UI** (`language=2` in `toonui.cfg`, or Settings > Display): all strings in
+  `src/i18n_fr.c`, accented fonts, French dates and weather. `tools/i18n_fr_check.py`
+  reports strings missing in French after each upstream release.
+- **Native solar production**: reads `powerProduction` from the Toon's own `happ_pwrusage`
+  service (the value the stock UI shows), as a fallback when no HomeWizard kWh meter or Home
+  Assistant sensor is configured. Feeds the Solar tile and the Energy screens.
+- **Solar history chart**: uses the Toon's `elec_solar_flow` / `elec_solar_quantity` RRD
+  loggers (Eneco/Quby firmware), with the generic `solar_*` names as fallback.
+
+Not supported / by design: no upstream pull requests; changes are kept small and isolated so
+that each upstream release can be merged with few conflicts.
+
+---
+
 > [!NOTE]
 > ### ✅ Toon 1 Safe Switching (Resolved in Release 1.0.3)
 > *As of release 1.0.3, all installation and switcher scripts are strictly guarded with POSIX regex and inittab file-integrity validation (`/etc/inittab.bak`), ensuring safe installation and switching across all legacy and modern Toon 1 and Toon 2 firmwares.*
