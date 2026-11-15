@@ -2003,7 +2003,7 @@ static const tr_fr_entry_t TR_FR[] = {
     { "Gekoppeld", "Linked",
       "Appairé" },
     { "Er is een apparaat gekoppeld, maar het is geen meetadapter (%s). Verwijder het eventueel via Instellingen > Z-Wave.", "A device was linked, but it is not a meter adapter (%s). Remove it via Settings > Z-Wave if needed.",
-      "Un appareil a été appairé, mais ce n'est pas un adaptateur de compteur (%s). Supprimez-le si nécessaire via Réglages > Z-Wave." },
+      "Un appareil a été appairé, mais ce n'est pas un adaptateur de compteur (%s). Supprimez-le si nécessaire via Paramètres > Z-Wave." },
     { "Dit apparaat vraagt om een S2-pincode; dat wordt niet ondersteund.", "This device asks for an S2 PIN code; that is not supported.",
       "Cet appareil demande un code PIN S2 ; ce n'est pas pris en charge." },
     { "Koppelen is niet gelukt (%s). Was de adapter eerder aan een andere Toon gekoppeld? Gebruik dan eerst \"Adapter resetten\" en probeer opnieuw.", "Linking failed (%s). Was the adapter linked to another Toon before? Use \"Reset adapter\" first, then try again.",
@@ -2106,6 +2106,12 @@ static const tr_fr_entry_t TR_FR[] = {
       "Prise ajoutée. Sa consommation apparaîtra d'ici une heure sous Statistiques > Prises." },
     { "Apparaat toegevoegd.", "Device added.",
       "Appareil ajouté." },
+    { "Slimme meter", "Smart meter",
+      "Compteur intelligent" },
+    { "Analoog", "Analog",
+      "Analogique" },
+    { "Laser", "Laser",
+      "Laser" },
 };
 
 #define TR_FR_COUNT (sizeof TR_FR / sizeof TR_FR[0])
