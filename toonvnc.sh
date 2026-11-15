@@ -128,7 +128,10 @@ setup_pipeinput() {
     TSLIB_OPT=",tslib_cal=/etc/pointercal"
   fi
 
-  if [ -n "$TOUCH_DEV" ] && "$X11VNC" -help 2>&1 | grep -q "mt"; then
+  # Only the patched build (shipped under toon2-x11vnc-mt, or whose help lists the
+  # UINPUT "mt" option) accepts UINPUT:mt. A plain grep for "mt" matched ordinary
+  # help text on stock/upstream x11vnc and made it exit on "invalid UINPUT option".
+  if [ -n "$TOUCH_DEV" ] && { [ "$X11VNC" = /usr/local/lib/toon2-x11vnc-mt/x11vnc ] || "$X11VNC" -help 2>&1 | grep -q "UINPUT:mt"; }; then
     PIPE="-pipeinput UINPUT:mt,touch_always=1,pressure=128${TSLIB_OPT},direct_abs=$TOUCH_DEV,nouinput"
     RAWFB="map:/dev/fb0@$GEOM"
   elif [ -x "$INPUT" ]; then
