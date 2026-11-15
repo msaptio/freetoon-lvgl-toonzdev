@@ -1,0 +1,2 @@
+x11vnc 0.9.17 (LibVNC/x11vnc) + libvncserver 0.9.14, static ARM EABI5, built without X (-rawfb only), Linaro 7.4.1.
+Install: /mnt/data/x11vnc (toonvnc.sh picks it up automatically).
