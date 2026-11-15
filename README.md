@@ -25,6 +25,22 @@ underlying project goes to its authors; the original README follows unchanged.
 Not supported / by design: no upstream pull requests; changes are kept small and isolated so
 that each upstream release can be merged with few conflicts.
 
+**Based on:** ToonzDev **1.0.10**.
+
+**Installing a custom build** (freetoon-lvgl must already be installed, see *Install* below;
+only the UI binary `/mnt/data/toonui` is replaced):
+
+1. Take the binary and its `.sha256` from the `builds` branch and check the hash.
+2. On the Toon, back up the current files:
+   `cp /mnt/data/toonui /mnt/data/toonui.bak && cp /mnt/data/toonui.cfg /mnt/data/toonui.cfg.bak`
+3. Copy the new binary to `/mnt/data/toonui.new`, `chmod 755` it, check the hash again on the
+   Toon, then `mv /mnt/data/toonui.new /mnt/data/toonui && kill $(pidof toonui)`
+   (init restarts the UI).
+4. Rollback: put `toonui.bak` back the same way.
+
+> Unofficial project, not affiliated with Engie, Eneco or Quby. Use at your own risk. The
+> device's stock software remains their property and is not distributed here.
+
 ---
 
 > [!NOTE]
