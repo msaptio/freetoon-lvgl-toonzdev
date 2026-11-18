@@ -16,16 +16,20 @@ underlying project goes to its authors; the original README follows unchanged.
 - **French UI** (`language=2` in `toonui.cfg`, or Settings > Display): all strings in
   `src/i18n_fr.c`, accented fonts, French dates and weather. `tools/i18n_fr_check.py`
   reports strings missing in French after each upstream release.
-- **Native solar production**: reads `powerProduction` from the Toon's own `happ_pwrusage`
-  service (the value the stock UI shows), as a fallback when no HomeWizard kWh meter or Home
-  Assistant sensor is configured. Feeds the Solar tile and the Energy screens.
-- **Solar history chart**: uses the Toon's `elec_solar_flow` / `elec_solar_quantity` RRD
-  loggers (Eneco/Quby firmware), with the generic `solar_*` names as fallback.
+- **Native solar production**: since 1.0.12 upstream reads `powerProduction` from the Toon's
+  own `happ_pwrusage` service when a meter adapter reports a "solar" usage. This edition also
+  accepts it while the meter adapter is the energy source (the Engie boxx case, where no
+  "solar" usage is reported), so the Solar tile and the Energy screens keep working.
+- **VNC helper** (`toonvnc.sh`): detects the patched multitouch x11vnc precisely and uses an
+  arrow cursor.
+
+Merged upstream (no longer custom): the solar history chart on the `elec_solar_*` loggers
+(1.0.12).
 
 Not supported / by design: no upstream pull requests; changes are kept small and isolated so
 that each upstream release can be merged with few conflicts.
 
-**Based on:** ToonzDev **1.0.10**.
+**Based on:** ToonzDev **1.0.13**.
 
 **Installing a custom build** (freetoon-lvgl must already be installed, see *Install* below;
 only the UI binary `/mnt/data/toonui` is replaced):
