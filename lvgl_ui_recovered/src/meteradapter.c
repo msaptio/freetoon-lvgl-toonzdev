@@ -217,6 +217,14 @@ static int usage_val(const char * buf, const char * obj, float * out) {
 /* Solar meter on the adapter: happ_pwrusage powerProduction (W). Only polled
  * while an adapter reports a "solar" usage, so P1-only setups (where
  * powerProduction is the export) don't show it as solar. */
+/* Custom edition (Belgium / Engie boxx): the Toon's own meter adapter
+ * delivers powerProduction without reporting a "solar" usage, and the stock
+ * UI shows it as solar. Also accept it while the meter adapter is the energy
+ * source, so the solar tiles keep working as they did since 1.0.10 FR. */
+static int solar_source(void) {
+    return ma_has_usage("solar") || settings.energy_source == 0;
+}
+
 static void poll_solar(void) {
     char buf[512];
     if (http_fetch_to("http://127.0.0.1:10080/happ_pwrusage?action=GetCurrentUsage", buf, sizeof buf, 2) != 0) return;
@@ -230,7 +238,7 @@ static void poll_solar(void) {
 
 int meteradapter_have_solar(void) {
     return !settings.client_mode && meter_state.solar_at &&
-           (long)time(NULL) - meter_state.solar_at < 60 && ma_has_usage("solar");
+           (long)time(NULL) - meter_state.solar_at < 60 && solar_source();
 }
 
 static int parse_rrd_delta(const char * body, float * out_delta, float * out_latest) {
@@ -285,7 +293,7 @@ static void *watchdog_thread(void *arg) {
         /* Solar meter on the adapter (any energy source: the S0 sensor can sit
          * next to a HomeWizard P1). Every 10 s. */
         static int solar_tick = 0;
-        if (!settings.client_mode && (++solar_tick & 1) == 0 && ma_has_usage("solar"))
+        if (!settings.client_mode && (++solar_tick & 1) == 0 && solar_source())
             poll_solar();
 
         if (!settings.client_mode && settings.energy_source == 0) {
