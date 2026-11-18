@@ -325,7 +325,7 @@ static void build_row(int i) {
         lv_obj_align(b, LV_ALIGN_RIGHT_MID, 0, 0);
         b = mk_btn(c, "Stop", 52, 36, on_cover_stop, i);
         lv_obj_align(b, LV_ALIGN_RIGHT_MID, -56, 0);
-        b = mk_btn(c, "Open", 52, 36, on_cover_open, i);
+        b = mk_btn(c, tr("Open", "Open"), 52, 36, on_cover_open, i);
         lv_obj_align(b, LV_ALIGN_RIGHT_MID, -112, 0);
     } else if (it->ctl == CTL_RUN) {
         int scene = it->src == SRC_HA && find_ha(it) && find_ha(it)->type == HADEV_SCENE;
@@ -472,8 +472,8 @@ static void item_state(const hub_item_t * it, row_state_t * o) {
         if (!d) break;
         if (d->kind == DZ_BLIND) {
             o->state = 0;
-            if (d->level >= 0) snprintf(o->txt, sizeof o->txt, "%s - %s %d%%", badge, d->on ? "open" : tr("dicht", "closed"), d->level);
-            else snprintf(o->txt, sizeof o->txt, "%s - %s", badge, d->on ? "open" : tr("dicht", "closed"));
+            if (d->level >= 0) snprintf(o->txt, sizeof o->txt, "%s - %s %d%%", badge, d->on ? tr("open", "open") : tr("dicht", "closed"), d->level);
+            else snprintf(o->txt, sizeof o->txt, "%s - %s", badge, d->on ? tr("open", "open") : tr("dicht", "closed"));
             break;
         }
         o->state = d->on ? 1 : 0;
