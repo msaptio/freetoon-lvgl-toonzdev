@@ -20,8 +20,8 @@ underlying project goes to its authors; the original README follows unchanged.
   own `happ_pwrusage` service when a meter adapter reports a "solar" usage. This edition also
   accepts it while the meter adapter is the energy source (the Engie boxx case, where no
   "solar" usage is reported), so the Solar tile and the Energy screens keep working.
-- **VNC helper** (`toonvnc.sh`): detects the patched multitouch x11vnc precisely and uses an
-  arrow cursor.
+- **VNC helper** (`toonvnc.sh`): detects the patched multitouch x11vnc precisely and shows an
+  arrow cursor in the viewer.
 
 Merged upstream (no longer custom): the solar history chart on the `elec_solar_*` loggers
 (1.0.12).
