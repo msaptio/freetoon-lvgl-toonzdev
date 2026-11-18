@@ -173,7 +173,7 @@ case "$CMD" in
     "$X11VNC" \
       -rawfb "$RAWFB" \
       $PIPE \
-      -rfbport $PORT -forever -shared -nocursor \
+      -rfbport $PORT -forever -shared -cursor arrow -arrow 3 \
       -desktop ToonUI $AUTH \
       -bg -o "$LOG" >/dev/null 2>&1
     sleep 1
@@ -265,7 +265,7 @@ case "$CMD" in
     exec "$X11VNC" \
       -rawfb "$RAWFB" \
       $PIPE \
-      -rfbport $PORT -forever -shared -nocursor \
+      -rfbport $PORT -forever -shared -cursor arrow -arrow 3 \
       -desktop ToonUI $AUTH
     ;;
   *)
