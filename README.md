@@ -29,7 +29,7 @@ Merged upstream (no longer custom): the solar history chart on the `elec_solar_*
 Not supported / by design: no upstream pull requests; changes are kept small and isolated so
 that each upstream release can be merged with few conflicts.
 
-**Based on:** ToonzDev **1.0.13**.
+**Based on:** ToonzDev **1.0.16**.
 
 **Installing a custom build** (freetoon-lvgl must already be installed, see *Install* below;
 only the UI binary `/mnt/data/toonui` is replaced):
